@@ -20,7 +20,7 @@ def lead_list_view(request):
 @login_required
 def lead_create_view(request):
 
-    team = Team.objects.filter(created_by=request.user).first()
+    team = Team.objects.filter(created_by=request.user)
     lead_count = team.leads.count()
     max_leads = team.plan.max_leads
 

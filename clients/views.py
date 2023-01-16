@@ -21,7 +21,7 @@ def client_list_view(request):
 @login_required
 def client_create_view(request):
 
-    team = Team.objects.filter(created_by=request.user).first()
+    team = Team.objects.filter(created_by=request.user)
     client_count = team.clients.count()
     max_clients = team.plan.max_clients
 
