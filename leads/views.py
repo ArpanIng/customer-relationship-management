@@ -17,16 +17,6 @@ def lead_list_view(request):
     return render(request, "leads/lead_list.html", context)
 
 
-# class LeadListview(LoginRequiredMixin, generic.ListView):
-#     context_object_name = "leads"
-#     template_name = "leads/lead_list.html"
-
-#     def get_queryset(self):
-#         return Lead.objects.filter(
-#             created_by=self.request.user, converted_to_client=False
-#         )
-
-
 @login_required
 def lead_create_view(request):
 
