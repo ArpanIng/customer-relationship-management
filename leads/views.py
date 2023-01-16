@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.views import generic
 from django.shortcuts import render, redirect, get_object_or_404
+
 from .forms import LeadCreateForm
 from .models import Lead
 
@@ -11,51 +13,49 @@ from teams.models import Team
 
 
 class LeadListView(LoginRequiredMixin, generic.ListView):
+    model = Lead
     context_object_name = "leads"
     template_name = "leads/lead_list.html"
 
     def get_queryset(self):
-        return Lead.objects.filter(
-            created_by=self.request.user, converted_to_client=False
-        )
+        queryset = super(LeadListView, self).get_queryset()
+        return queryset.filter(created_by=self.request.user, converted_to_client=False)
 
 
-@login_required
-def lead_create_view(request):
+class LeadCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Lead
+    form_class = LeadCreateForm
+    context_object_name = "team"
+    template_name = "leads/lead_create.html"
 
-    team = Team.objects.filter(created_by=request.user).first()
-    lead_count = team.leads.count()
-    max_leads = team.plan.max_leads
+    def form_valid(self, form):
+        # team = Team.objects.filter(created_by=self.request.user).first()
+        self.lead = form.save(commit=False)
+        self.lead.created_by = self.request.user
+        # self.lead.team = team
+        self.lead.save()
+        return super().form_valid(form)
 
-    if request.method == "POST":
-        form = LeadCreateForm(request.POST)
-        if form.is_valid():
-            lead = form.save(commit=False)
-            lead.created_by = request.user
-            lead.team = team
-            lead.save()
-            messages.success(request, "Lead created sucessfully!")
-            return redirect("leads:lead_list")
-    else:
-        form = LeadCreateForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        team = Team.objects.filter(created_by=self.request.user).first()
+        context["lead_count"] = team.leads.count()
+        context["max_leads"] = team.plan.max_leads
+        return context
 
-    context = {
-        "form": form,
-        "team": team,
-        "lead_count": lead_count,
-        "max_leads": max_leads,
-    }
-    return render(request, "leads/lead_create.html", context)
+    def get_success_url(self):
+        messages.success(self.request, "Lead created sucessfully!")
+        return reverse("leads:lead_list")
 
 
-@login_required
-def lead_detail_view(request, pk):
-    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+class LeadDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Lead
+    context_object_name = "lead"
+    template_name = "leads/lead_detail.html"
 
-    context = {
-        "lead": lead,
-    }
-    return render(request, "leads/lead_detail.html", context)
+    def get_queryset(self):
+        queryset = super(LeadDetailView, self).get_queryset()
+        return queryset.filter(created_by=self.request.user)
 
 
 @login_required
@@ -79,19 +79,24 @@ def lead_update_view(request, pk):
     return render(request, "leads/lead_update.html", context)
 
 
-@login_required
-def lead_delete_view(request, pk):
-    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+class LeadUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Lead
+    context_object_name = "lead"
+    template_name = "leads/lead_update.html"
 
-    if request.method == "POST":
-        lead.delete()
-        messages.success(request, "Lead deleted sucessfully!")
-        return redirect("leads:lead_list")
 
-    context = {
-        "lead": lead,
-    }
-    return render(request, "leads/lead_delete.html", context)
+class LeadDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Lead
+    context_object_name = "lead"
+    template_name = "leads/lead_delete.html"
+
+    def get_success_url(self):
+        messages.success(self.request, "Lead deleted sucessfully!")
+        return reverse("leads:lead_list")
+
+    def get_queryset(self):
+        queryset = super(LeadDeleteView, self).get_queryset()
+        return queryset.filter(created_by=self.request.user)
 
 
 @login_required
