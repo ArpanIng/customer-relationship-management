@@ -1,0 +1,24 @@
+TODO LIST
+- Create virtual environment, install django and create project
+- Base pages / templates
+- Authentication
+- simple dashboard
+- Create leads app
+    - models
+    - CRUD
+- Convert leads to clients
+- Create leads clients
+    - models
+    - CRUD
+- Implement solution for teams
+    - create teams app
+    - models
+    - when you create a lead, make sure team is set
+    - when you create a client, make sure team is set
+    - you need to be a member of a team, if not create one
+    - if you're the owner, make it possible to edit the team
+    - limit number of leads, clients
+- Implement a payment solution / Montly recurring payments
+- Deploy
+
+REQUIRED: myaccount page in navbar

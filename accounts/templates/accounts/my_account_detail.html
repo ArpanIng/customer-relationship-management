@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Account{% endblock title %}
+
+{% block main_content %}
+
+<section class="text-gray-600 body-font">
+  <div class="container flex flex-wrap px-20 py-14 mx-auto items-center">
+    {% include 'messages.html' %}
+    <div class="md:w-1/2 md:pr-12 md:py-8 md:border-b-0 mb-10 md:mb-0 pb-10 border-b border-gray-200">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">MY ACCOUNT</h1>
+      <p class="leading-relaxed text-base"><span class='text-black'>Username: </span>{{ request.user.username }}</p>
+      <p class="leading-relaxed text-base"><span class='text-black'>Team: </span>{{ team.name }}</p>
+      {% if team.created_by == request.user %}
+      <a href="{% url 'teams:team_edit' team.pk %}" class="text-indigo-500 inline-flex items-center mt-4">
+        Edit
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock main_content %}

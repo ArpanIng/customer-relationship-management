@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Client Detail{% endblock title %}
+
+
+{% block main_content %}
+
+<section class="text-gray-600 body-font overflow-hidden">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="lg:w-3/5 mx-auto flex flex-wrap">
+            <div class="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+                <h2 class="text-sm title-font text-gray-500 tracking-widest">CLIENT</h2>
+                <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ client }}</h1>
+                <div class="flex mb-4">
+                    <a class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+                        Overview
+                    </a>
+                    <a href="{% url 'clients:client_update' client.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
+                        Update Details
+                    </a>
+                </div>
+                {% if client.description %}
+                    <p class="leading-relaxed mb-4">{{ client.description }}</p>
+                {% endif %}
+                <div class="flex border-t border-gray-300 py-2">
+                    <span class="text-gray-500">Age</span>
+                    <span class="ml-auto text-gray-900">{{ client.age }}</span>
+                </div>
+                <div class="flex border-t border-gray-300 py-2">
+                    <span class="text-gray-500">Created at</span>
+                    <span class="ml-auto text-gray-900">{{ client.created_at }}</span>
+                </div>
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Updated at</span>
+                    <span class="ml-auto text-gray-900">{{ client.updated_at }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock main_content %}
