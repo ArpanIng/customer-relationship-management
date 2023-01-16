@@ -3,7 +3,7 @@ from . import views
 
 app_name = "leads"
 urlpatterns = [
-    path("", views.lead_list_view, name="lead_list"),
+    path("", views.LeadListView.as_view(), name="lead_list"),
     path("add/", views.lead_create_view, name="lead_create"),
     path("<int:pk>/", views.lead_detail_view, name="lead_detail"),
     path("<int:pk>/update/", views.lead_update_view, name="lead_update"),

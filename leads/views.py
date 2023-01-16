@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LeadCreateForm
 from .models import Lead
@@ -8,13 +10,14 @@ from clients.models import Client
 from teams.models import Team
 
 
-@login_required
-def lead_list_view(request):
-    leads = Lead.objects.filter(created_by=request.user, converted_to_client=False)
-    context = {
-        "leads": leads,
-    }
-    return render(request, "leads/lead_list.html", context)
+class LeadListView(LoginRequiredMixin, generic.ListView):
+    context_object_name = "leads"
+    template_name = "leads/lead_list.html"
+
+    def get_queryset(self):
+        return Lead.objects.filter(
+            created_by=self.request.user, converted_to_client=False
+        )
 
 
 @login_required
