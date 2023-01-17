@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Lead
+from .models import Lead, Comment
 
 
 class LeadCreateForm(forms.ModelForm):
@@ -17,4 +17,13 @@ class LeadCreateForm(forms.ModelForm):
         )
         widgets = {
             "description": forms.Textarea(attrs={"rows": 4, "cols": 15}),
+        }
+
+
+class LeadAddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("content",)
+        widgets = {
+            "content": forms.Textarea(attrs={"rows": 4, "cols": 10}),
         }

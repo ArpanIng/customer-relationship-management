@@ -18,7 +18,17 @@ TODO LIST
     - you need to be a member of a team, if not create one
     - if you're the owner, make it possible to edit the team
     - limit number of leads, clients
+- Refactoring
+    - install Tailwind instead of using the CDN
+    - replace FBV views with CBV views
+- Export information (leads, clients)
+- Communicate with eachother
+- Add comments
+- Upload files to leads and clients
 - Implement a payment solution / Montly recurring payments
 - Deploy
 
-REQUIRED: myaccount page in navbar
+REQUIRED TODO: myaccount page in navbar, configure Tailwind
+
+
+Python Django CRM Course - Part 6 - 11:00
