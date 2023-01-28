@@ -44,3 +44,6 @@ class Lead(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+    
+    def get_absolute_url(self):
+        return reverse("leads:lead_detail", kwargs={"pk": self.pk})
