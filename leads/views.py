@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import LeadCreateForm
@@ -48,7 +49,11 @@ def lead_create_view(request):
 
 @login_required
 def lead_detail_view(request, pk):
-    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    
+    try:
+        lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    except:
+        return HttpResponse("Not ALLOWED!")
 
     context = {
         "lead": lead,
@@ -59,7 +64,10 @@ def lead_detail_view(request, pk):
 @login_required
 def lead_update_view(request, pk):
 
-    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    try:
+        lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    except:
+        return HttpResponse("Not ALLOWED!")
 
     if request.method == "POST":
         form = LeadCreateForm(request.POST, instance=lead)
@@ -79,7 +87,11 @@ def lead_update_view(request, pk):
 
 @login_required
 def lead_delete_view(request, pk):
-    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    
+    try:
+        lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    except:
+        return HttpResponse("Not ALLOWED!")
 
     if request.method == "POST":
         lead.delete()
