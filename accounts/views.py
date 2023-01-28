@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import views
 from django.contrib.auth.decorators import login_required
@@ -12,16 +13,13 @@ from teams.models import Team
 def signup_view(request):
 
     if request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect(settings.LOGIN_REDIRECT_URL)
 
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             UserProfile.objects.create(user=user)
-            team = Team.objects.create(name="", created_by=request.user)
-            team.members.add(request.user)
-            team.save()
             messages.success(request, "Account created successfully!")
             return redirect("accounts:login")
     else:
@@ -48,7 +46,7 @@ class AccountLoginView(views.LoginView):
     def dispatch(self, request, *args, **kwargs):
         """Block authenticated user from accessing login URL."""
         if request.user.is_authenticated:
-            return redirect("homepage")
+            return redirect(settings.LOGIN_REDIRECT_URL)
         return super().dispatch(request, *args, **kwargs)
 
 
