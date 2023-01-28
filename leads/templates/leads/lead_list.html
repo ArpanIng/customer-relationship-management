@@ -50,7 +50,7 @@
                                 {% for lead in leads %}
                                 <tr class="bg-white">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        <a class="hover:text-indigo-500" href="{% url 'leads:lead_detail' lead.pk %}">{{ lead.first_name }}</a>
+                                        <a class="hover:text-indigo-500" href="{{ lead.get_absolute_url }}">{{ lead.first_name }}</a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ lead.last_name }}
