@@ -28,7 +28,6 @@ TODO LIST
 - Implement a payment solution / Montly recurring payments
 - Deploy
 
-REQUIRED TODO: myaccount page in navbar, configure Tailwind
-
+REQUIRED TODO: myaccount page in navbar
 
 Python Django CRM Course - Part 6 - 11:00
