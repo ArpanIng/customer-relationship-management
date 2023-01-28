@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.urls import reverse
 
 from teams.models import Team
 
@@ -21,3 +22,6 @@ class Client(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+    def get_absolute_url(self):
+        return reverse("clients:client_detail", kwargs={"pk": self.pk})
