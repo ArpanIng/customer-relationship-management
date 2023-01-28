@@ -14,7 +14,7 @@
             </button>
         </form>
         <div class="py-5">
-            <a class="hover:text-blue-500 underline" href="{% url 'leads:lead_detail' lead.pk %}">Cancel</a>
+            <a class="hover:text-blue-500 underline" href="{{ lead.get_absolute_url }}">Cancel</a>
         </div>
     </div>
 </div>
